@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.comunidadedevspace.taskbeats'
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.comunidadedevspace.taskbeats"

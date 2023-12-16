@@ -1,0 +1,27 @@
+Android jetpack é um pacote de bibliotecas e uma dessas é a recycleView.
+
+RecycleView da suporte para exibiçao de grandes conjuntos de dados. Cria os
+elementos dinamicamente. Quando um item rola para fora da visualização, essa
+não é destruída, mas é reutilizada para nova visualizações. É uma ViewGroup!!
+
+
+ViewHolder:  é um fixador de visualizações. Sendo assim, define cada elemnto
+da lista que será passada para o recycleView.
+    O que vai ser colocado dentro da visualização que foi fixado pelo Holder?
+    É aí que entra o adapter. O adapter é responsável por vincular as visuali
+    zações aos dados da recycle. O recycle solicita as vizualizações e o adapter
+    vincula essas com os dados da recycle.
+
+Depois de definir o layout e o comportamento da recycle, é necessário. A viewholder
+fornece toda a funcionalidade para os itens da lsita. O fixador é um wrapper
+em torno de uma view. Toda essa visualização é gerenciada pela recycle. Ou seja,
+a recycle é uma gestora? Após isso, é necessário vincular os dados as visualizações
+com o adapter.
+
+Os itens de uma recycleView são gerenciados pelo layoultmanger. A biblioteca
+RecycleView(ela é uma biblioteca) fornece três gerenciadores de layout que
+processam as situações mais comuns: linearLayoutManager, GridLayoultManager
+StaggeredGridLAyoultMAnager.
+
+O ViewHolder é um wrapper em torno da View que contem o layout de um item individual
+na lista. O ADAPTER é responsável por criar objetos do tipo ViewHolder.
