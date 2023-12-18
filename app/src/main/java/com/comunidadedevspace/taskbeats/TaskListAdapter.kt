@@ -26,6 +26,7 @@ class TaskListAdapter(private val titles: List<String>): RecyclerView.Adapter<Ta
     override fun onBindViewHolder(holder: TaskListViewHolder, position: Int) {
         val item = titles[position]
         holder.bind(item)
+
     }
 }
 
@@ -36,7 +37,6 @@ class TaskListViewHolder(view: View): RecyclerView.ViewHolder(view){
 
     fun bind(title: String){
         tvTaskTitle.text = title
-        tvTaskDescription.text = title
     }
 }
 
