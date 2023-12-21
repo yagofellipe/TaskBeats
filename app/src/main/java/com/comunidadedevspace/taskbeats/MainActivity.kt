@@ -1,11 +1,22 @@
 package com.comunidadedevspace.taskbeats
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK){
+
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,11 +51,9 @@ class MainActivity : AppCompatActivity() {
         rvTask.adapter = adapter
     }
 
-    fun openTaskDetailView(task: Task){
-        val intent = Intent(this, TaskDetailActivity::class.java)
-            .apply {
-                putExtra(TaskDetailActivity.TASK_TITLE_EXTRA, task.title)
-            }
-        startActivity(intent)
+    private fun openTaskDetailView(task: Task){
+        val intent = TaskDetailActivity.start(this, task)
+        startForResult.launch(intent)
+
     }
 }
