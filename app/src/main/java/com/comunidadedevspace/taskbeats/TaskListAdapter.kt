@@ -8,10 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class TaskListAdapter(
-    private val listTask: List<Task>,
+
     private val openTaskDetailView: (task: Task) -> Unit
     ):
         RecyclerView.Adapter<TaskListViewHolder>() {
+
+    private var listTask: List<Task> = emptyList()
+
+    fun submit(list: List<Task>){
+        listTask = list
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListViewHolder {
 
         val view: View = LayoutInflater

@@ -10,6 +10,7 @@
 
     <TextView
         android:id="@+id/tv_task_title"
+        android:textColor="@color/brown_900"
         tools:text="Title sample"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -19,16 +20,10 @@
 
     <TextView
         android:id="@+id/tv_task_description"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
         tools:text="Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    <View
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:alpha="0.5"
-        android:background="@color/teal_200"/>
 
 </LinearLayout>
