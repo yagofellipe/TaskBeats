@@ -5,8 +5,12 @@ import android.app.Notification.Action
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.recyclerview.widget.RecyclerView
 import java.io.Serializable
 
@@ -15,11 +19,9 @@ class MainActivity : AppCompatActivity() {
     private var taskList = arrayListOf(
         Task(0,"Titlesvsgbweegb 1", "Agatha"),
         Task(1,"Titlesvsgbweegb 1", "Agatha"),
-        Task(2,"Titlesvsgbweegb 1", "Agatha"),
-        Task(3,"Titlesvsgbweegb 1", "Agatha"),
-        Task(4,"Titlesvsgbweegb 1", "Agatha"),
-        Task(5,"Titlesvsgbweegb 1", "Agatha"),
         )
+
+    private lateinit var ctnContent : LinearLayout
 
     private val adapter: TaskListAdapter = TaskListAdapter(::openTaskDetailView)
 
@@ -35,12 +37,18 @@ class MainActivity : AppCompatActivity() {
             val task : Task = taskAction.task
             taskList.remove(task)
 
+            if (taskList.size == 0){
+                ctnContent.visibility = View.VISIBLE
+            }
+
             adapter.submit(taskList)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        ctnContent = findViewById(R.id.ctn_content)
 
         val rvTask: RecyclerView = findViewById(R.id.rv_task_list)
 
