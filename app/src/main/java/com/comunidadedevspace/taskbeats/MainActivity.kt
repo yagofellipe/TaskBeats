@@ -17,7 +17,7 @@ import java.io.Serializable
 class MainActivity : AppCompatActivity() {
 
     private var taskList = arrayListOf(
-        Task(0,"Titlesvsgbweegb 1", "Agatha"),
+        Task(0,"Title 1", "Agatha"),
         Task(1,"Titlesvsgbweegb 1", "Agatha"),
         )
 
