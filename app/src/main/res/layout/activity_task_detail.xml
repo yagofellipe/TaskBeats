@@ -9,7 +9,7 @@
     tools:context=".TaskDetailActivity">
 
     <TextView
-        android:textColor="@color/brown_900"
+        style="@style/Title3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Task Title"/>
@@ -21,7 +21,7 @@
         android:height="48dp"
         android:hint="Adicione uma tarefa" />
     <TextView
-        android:textColor="@color/brown_900"
+        style="@style/Title3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
