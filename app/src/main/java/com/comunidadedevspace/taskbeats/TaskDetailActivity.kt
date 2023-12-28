@@ -3,21 +3,23 @@ package com.comunidadedevspace.taskbeats
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.TextView
-import java.io.Serializable
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 
 class TaskDetailActivity : AppCompatActivity() {
 
-    private lateinit var task: Task
+    private var task: Task? = null
     companion object{
         const val TASK_DETAIL_EXTRA = "task.extra.detail"
 
-        fun start(context: Context, task: Task): Intent{
+        fun start(context: Context, task: Task?): Intent{
             val intent = Intent(context, TaskDetailActivity::class.java)
                 .apply {
                     putExtra(TaskDetailActivity.TASK_DETAIL_EXTRA, task)
@@ -29,11 +31,41 @@ class TaskDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
 
+        task = intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?
+        val edtTitle = findViewById<EditText>(R.id.edt_task_title)
+        val edtDescription = findViewById<EditText>(R.id.edt_task_description)
+        val btnDone = findViewById<Button>(R.id.btn_done)
 
-        task = requireNotNull(intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?)
+        if (task != null) {
+            // Se a tarefa existir (estamos editando), preenchemos os campos com os dados da tarefa
+            edtTitle.setText(task!!.title)
+            edtDescription.setText(task!!.description)
+        }
 
-        val tvTitle = findViewById<TextView>(R.id.tv_task_title_detail)
-        tvTitle.text = task?.title
+        btnDone.setOnClickListener {
+            val title = edtTitle.text.toString()
+            val desc = edtDescription.text.toString()
+
+            if (title.isNotEmpty() && desc.isNotEmpty()) {
+                if (task == null)
+                    addOrUpdateTask(0, title, desc, ActionType.CREATE)
+                else {
+                    addOrUpdateTask(task!!.id, title, desc, ActionType.UPDATE)
+                }
+            } else {
+                showMessage(it, "Fields are required")
+            }
+        }
+    }
+
+    private fun addOrUpdateTask(
+        id: Int,
+        title: String,
+        description: String,
+        actionType: ActionType
+    ) {
+        val updatedTask = Task(id, title, description)
+        returnAction(updatedTask, actionType)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,20 +78,35 @@ class TaskDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_task -> {
-                val intent = Intent()
-                    .apply {
-                        val actionType = ActionType.DELETE
-                        val taskAction = TaskAction(task, actionType)
-                        putExtra(TASK_ACTION_RESULT, taskAction)
-                    }
-                setResult(Activity.RESULT_OK, intent)
+
+                if(task != null) {
+                    returnAction(task!!, ActionType.DELETE)
+                }
                 finish()
                 true
             }
+
 
             else -> super.onOptionsItemSelected(item)
         }
 
         return true
     }
+
+    private fun returnAction(task: Task, actionType: ActionType) {
+        val intent = Intent().apply {
+            val taskAction = TaskAction(task, actionType.name)
+            putExtra(TASK_ACTION_RESULT, taskAction)
+        }
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    private fun showMessage(view: View, message:String){
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+            .setAction("Action", null)
+            .show()
+    }
+
+
 }
