@@ -1,4 +1,4 @@
-package com.comunidadedevspace.taskbeats
+package com.comunidadedevspace.taskbeats.presentation
 
 import android.app.Activity
 import android.content.Context
@@ -11,6 +11,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.comunidadedevspace.taskbeats.R
+import com.comunidadedevspace.taskbeats.data.Task
 import com.google.android.material.snackbar.Snackbar
 
 class TaskDetailActivity : AppCompatActivity() {
@@ -22,7 +24,7 @@ class TaskDetailActivity : AppCompatActivity() {
         fun start(context: Context, task: Task?): Intent{
             val intent = Intent(context, TaskDetailActivity::class.java)
                 .apply {
-                    putExtra(TaskDetailActivity.TASK_DETAIL_EXTRA, task)
+                    putExtra(TASK_DETAIL_EXTRA, task)
                 }
             return intent
         }
