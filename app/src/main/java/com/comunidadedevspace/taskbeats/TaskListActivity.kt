@@ -8,21 +8,31 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
-    private var taskList = arrayListOf(
-        Task(0,"Title 1", "Agatha"),
-        Task(1,"Titlesvsgbweegb 1", "Agatha"),
-        )
+
 
     private lateinit var ctnContent : LinearLayout
 
-    private val adapter: TaskListAdapter = TaskListAdapter(::onListItemClicked)
+    private val adapter: TaskListAdapter by lazy { TaskListAdapter(::onListItemClicked) }
 
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "taskbeat-database"
+        ).build()
+    }
+
+    private val dao by lazy { db.taskDao() }
 
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -34,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             )
             val task: Task = taskAction.task
             if (taskAction.actionType == ActionType.DELETE.name) {
-                val newList = arrayListOf<Task>().apply {
+                /*val newList = arrayListOf<Task>().apply {
                     addAll(taskList)
                 }
 
@@ -46,18 +56,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 adapter.submitList(newList)
-                taskList = newList
+                taskList = newList*/
             }else if(taskAction.actionType == ActionType.CREATE.name){
-                val newList = arrayListOf<Task>().apply {
-                    addAll(taskList)
-                }
-                newList.add(task)
-
-                showMessage(ctnContent, "Item create ${task.title}")
-                adapter.submitList(newList)
-                taskList = newList
+                insertIntoDataBase(task)
             }else if(taskAction.actionType == ActionType.UPDATE.name){
-                val newList = arrayListOf<Task>().apply {
+               /* val newList = arrayListOf<Task>().apply {
                     addAll(taskList)
                 }
 
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
                 showMessage(ctnContent, "Item updated ${task.title}")
                 adapter.submitList(tempEmptyList)
-                taskList = tempEmptyList
+                taskList = tempEmptyList*/
             }
         }
     }
@@ -81,13 +84,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
 
+
+        listFromDataBase()
+
         ctnContent = findViewById(R.id.ctn_content)
 
         val rvTask: RecyclerView = findViewById(R.id.rv_task_list)
 
-
-
-        adapter.submitList(taskList)
 
 
         rvTask.adapter = adapter
@@ -95,6 +98,20 @@ class MainActivity : AppCompatActivity() {
         val fab = findViewById<FloatingActionButton>(R.id.fab_add)
         fab.setOnClickListener {
             openTaskListDetail(null)
+        }
+    }
+
+    private fun insertIntoDataBase(task: Task){
+        CoroutineScope(IO).launch {
+            dao.insert(task)
+            listFromDataBase()
+        }
+    }
+
+    private fun listFromDataBase(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val myDataBaseList: List<Task> = dao.getAll()
+            adapter.submitList(myDataBaseList)
         }
     }
 

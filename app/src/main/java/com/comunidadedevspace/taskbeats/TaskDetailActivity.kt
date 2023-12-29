@@ -31,6 +31,11 @@ class TaskDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
 
+
+
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         task = intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?
         val edtTitle = findViewById<EditText>(R.id.edt_task_title)
         val edtDescription = findViewById<EditText>(R.id.edt_task_description)
