@@ -43,40 +43,16 @@ class MainActivity : AppCompatActivity() {
                 data?.getSerializableExtra(TASK_ACTION_RESULT) as TaskAction
             )
             val task: Task = taskAction.task
-            if (taskAction.actionType == ActionType.DELETE.name) {
-                /*val newList = arrayListOf<Task>().apply {
-                    addAll(taskList)
+            when (taskAction.actionType) {
+                ActionType.DELETE.name -> {
+                    deleteIntoDataBase(task)
                 }
-
-                newList.remove(task)
-
-                showMessage(ctnContent, "Item deleted ${task.title}")
-                if (newList.size == 0) {
-                    ctnContent.visibility = View.VISIBLE
+                ActionType.CREATE.name -> {
+                    insertIntoDataBase(task)
                 }
-
-                adapter.submitList(newList)
-                taskList = newList*/
-            }else if(taskAction.actionType == ActionType.CREATE.name){
-                insertIntoDataBase(task)
-            }else if(taskAction.actionType == ActionType.UPDATE.name){
-               /* val newList = arrayListOf<Task>().apply {
-                    addAll(taskList)
+                ActionType.UPDATE.name -> {
+                    updateIntoDataBase(task)
                 }
-
-                val tempEmptyList = arrayListOf<Task>()
-                taskList.forEach{
-                    if(it.id == task.id){
-                        val newItem = Task(it.id, task.title, task.description)
-                        tempEmptyList.add(newItem)
-                    } else {
-                        tempEmptyList.add(it)
-                    }
-                }
-
-                showMessage(ctnContent, "Item updated ${task.title}")
-                adapter.submitList(tempEmptyList)
-                taskList = tempEmptyList*/
             }
         }
     }
@@ -101,6 +77,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun deleteIntoDataBase(task: Task){
+        CoroutineScope(IO).launch {
+            task?.let { task ->
+                dao.deleteTask(task)
+            }
+            listFromDataBase()
+        }
+    }
+
+    private fun updateIntoDataBase(task: Task){
+        CoroutineScope(IO).launch {
+            dao.updateTask(task)
+            listFromDataBase()
+        }
+    }
+
     private fun insertIntoDataBase(task: Task){
         CoroutineScope(IO).launch {
             dao.insert(task)
@@ -112,6 +104,12 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val myDataBaseList: List<Task> = dao.getAll()
             adapter.submitList(myDataBaseList)
+
+            if (myDataBaseList.isEmpty()) {
+                ctnContent.visibility = View.VISIBLE
+            }else{
+                ctnContent.visibility = View.GONE
+            }
         }
     }
 
