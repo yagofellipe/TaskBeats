@@ -15,4 +15,8 @@ class TaskBeatsApplication: Application() {
             AppDatabase::class.java, "taskbeat-database"
         ).build()
     }
+
+    fun getAppDataBase(): AppDatabase {
+        return db
+    }
 }
