@@ -8,8 +8,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.comunidadedevspace.taskbeats.R
+import com.comunidadedevspace.taskbeats.TaskBeatsApplication
 import com.comunidadedevspace.taskbeats.data.AppDatabase
 import com.comunidadedevspace.taskbeats.data.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,12 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private val adapter: TaskListAdapter by lazy { TaskListAdapter(::onListItemClicked) }
 
-    private val db by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "taskbeat-database"
-        ).build()
-    }
+    lateinit var db :AppDatabase
 
     private val dao by lazy { db.taskDao() }
 
@@ -64,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_task_list)
 
 
-        listFromDataBase()
+
 
         ctnContent = findViewById(R.id.ctn_content)
 
@@ -78,6 +73,13 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             openTaskListDetail(null)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        db = (application as TaskBeatsApplication).db
+
+        listFromDataBase()
     }
 
     private fun deleteIntoDataBase(task: Task){
