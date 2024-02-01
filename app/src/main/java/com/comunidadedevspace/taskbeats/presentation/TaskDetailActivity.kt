@@ -34,10 +34,7 @@ class TaskDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_task_detail)
 
 
-
-
         setSupportActionBar(findViewById(R.id.my_toolbar))
-
         task = intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?
         val edtTitle = findViewById<EditText>(R.id.edt_task_title)
         val edtDescription = findViewById<EditText>(R.id.edt_task_description)
@@ -64,6 +61,7 @@ class TaskDetailActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun addOrUpdateTask(
         id: Int,
