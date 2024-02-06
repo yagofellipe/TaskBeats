@@ -59,7 +59,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$arch_version"
-
+    implementation "io.coil-kt:coil:2.3.0"
     def fragment_version = "1.5.6"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
