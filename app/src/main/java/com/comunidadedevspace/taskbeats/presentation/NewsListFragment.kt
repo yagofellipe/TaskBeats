@@ -30,10 +30,16 @@ class NewsListFragment : Fragment() {
         recyclerView.adapter = adapter
 
         val newsList = listOf<News>(
-            News("Title 1", "davadv"),
-            News("Title 2", "dv z x"),
-            News("Title 3", "httdvd"),
-            News("Title 4", "hdavadv"),
+            News("Title 1", "https://via.placeholder.com/150"),
+            News("Title 2", "https://via.placeholder.com/150"),
+            News("Title 3", "https://via.placeholder.com/150"),
+            News("Title 4", "https://via.placeholder.com/150"),
+            News("Title 5", "https://via.placeholder.com/150"),
+            News("Title 6", "https://via.placeholder.com/150"),
+            News("Title 7", "https://via.placeholder.com/150"),
+            News("Title 8", "https://via.placeholder.com/150"),
+            News("Title 9", "https://via.placeholder.com/150"),
+            News("Title 10", "https://via.placeholder.com/150"),
         )
         adapter.submitList(newsList)
     }
