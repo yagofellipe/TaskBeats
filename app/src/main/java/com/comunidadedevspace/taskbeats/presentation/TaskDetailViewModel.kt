@@ -30,7 +30,7 @@ class TaskDetailViewModel(
         }
     }
     private fun deleteIntoDataBase(task: Task){
-        viewModelScope.launch(Dispatchers.IO)  {
+        viewModelScope.launch {
             task?.let { task ->
                 taskDao.deleteTask(task)
             }
@@ -39,14 +39,14 @@ class TaskDetailViewModel(
     }
 
     private fun updateIntoDataBase(task: Task){
-        viewModelScope.launch(Dispatchers.IO)  {
+        viewModelScope.launch {
             taskDao.updateTask(task)
 
         }
     }
 
     private fun insertIntoDataBase(task: Task){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskDao.insert(task)
 
         }
@@ -70,3 +70,13 @@ class TaskDetailViewModel(
     }
 
 }
+
+
+/*
+    O acesso em um database pode ser custoso e levar tempo. Por iss,
+    é necessário rodar as requisições em uma outra thread, para a main thread não ficar travada.
+    Caso não utilize, provavelmente, o app vai crashar.
+    Ao passar uma função SUSPEND, não é preciso usar a DISPATCHER.
+    SUSPEND: quando uma função é suspend, significa que ela pode ser suspensa sem bloquear
+    a thread.
+ */
